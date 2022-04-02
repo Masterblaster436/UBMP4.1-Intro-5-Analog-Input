@@ -1,6 +1,6 @@
 /*==============================================================================
  Project: Intro-5-Analog-Input
- Date:    March 14, 2022
+ Date:    April 2, 2022
  
  This program demonstrates the use of analog input, number conversion, and
  serial output functions. (Serial output is useful for debugging when using
@@ -59,16 +59,14 @@ int main(void)
     // Set up ports and ADC
     OSC_config();               // Configure oscillator for 48 MHz
     UBMP4_config();             // Configure I/O ports for on-board devices
-	ADC_config();               // Configure ADC and enable input on Q1
-    
+    ADC_config();               // Configure ADC and enable input on Q1
+    H1_serial_config();         // Prepare for serial output on H1
+        
     // Enable PORTC output except for phototransistor Q1 and IR receiver U2
     TRISC = 0b00001100;
     
     // If Q1 and U2 are not installed, all PORTC outputs can be enabled
     // TRISC = 0b00000000;
-    
-    // Prepare for serial output on H1
-    H1_serial_config();
     
     // Enable on-die temperature sensor and set high operating Vdd range
     FVRCON = FVRCON | 0b00110000;
@@ -82,7 +80,7 @@ int main(void)
     // ADC_select_channel(ANQ1);
     
     while(1)
-	{
+    {
         // Read selected ADC channel and display the analog result on the LEDs
         rawADC = ADC_read();
         LATC = rawADC;
@@ -252,7 +250,12 @@ int main(void)
  * 
  * Programming Activities
  * 
- * 1.   Does your UBMP4 have Q1 installed? If it does, it will be easier to use
+ * 1.   The bin_to_dec() function converts a single byte into three decimal
+ *      digits. Step 8 in the program analysis activities, above, converted
+ *      these digits to ASCII. Can you make a bin_to_ASCII() function that
+ *      would eliminate the need for you to offset the values to ASCII yourself?
+ * 
+ * 2.   Does your UBMP4 have Q1 installed? If it does, it will be easier to use
  *      Q1 as an input device instead of the temperature module. Q1 can either
  *      be an ambient light sensor, which is sensitive to visible light, or a
  *      phototransistor, sensitive to infrared (IR) wavelengths. Try using your
@@ -262,7 +265,26 @@ int main(void)
  *      level in one state and use conditional code to light an LED when the
  *      level rises or falls beyond a threshold you set.
  * 
- * 2.   Create a program that produces a PWM output proportional to an analog
- *      input, or a program that creates a tone having a pitch that proportional
- *      to an analog input.
+ * 3.   Create a program that produces a PWM output proportional to an analog
+ *      input, or a program that creates a tone having a pitch proportional
+ *      to an analog input value.
+ * 
+ * 4.   If you have an oscilloscope available, investigate how fast you get the
+ *      serial output to transmit. Try setting the bit delays in the serial
+ *      write function to 1 microsecond of delay, instead of 104 and 103. Does
+ *      it work the way it should? Is each bit 1us long? What do you think is
+ *      happening?
+ * 
+ * 5.   Creating a function to transmit serial data is relatively straight-
+ *      forward. Think about how you would create a function to receive serial
+ *      data instead. How could you ensure that the data is received correctly
+ *      even if there are slight timing differences between the transmitting
+ *      and receiving devices?
+ * 
+ * 6.   Transmitting serial data involved isolating each bit of a variable to
+ *      be sent using bit-wise logical operators and bit-shifting the remaining
+ *      data from within a loop. Received serial data can be assembled into an
+ *      8-bit variable using a similar technique. Try to create a function or
+ *      just the main loop of code that would successively read a digital input
+ *      pin and assemble the values into an 8-bit variable.
  */
