@@ -83,7 +83,7 @@ int main(void)
     {
         // Read selected ADC channel and display the analog result on the LEDs
         rawADC = ADC_read();
-        LATC = rawADC;
+        LATC = rawADC << 4;     // Shift result 4 bits to show low nybble on LEDs
         
         // Add serial write code from the program analysis activities here:
         
