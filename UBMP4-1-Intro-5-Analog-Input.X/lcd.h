@@ -8,25 +8,25 @@
 
 void Lcd_Port(char a)
 {
-    //if (a & 1)
+    if (a & 1)
         LD4 = 1;
-    //else
-        //LD4 = 0;
+    else
+        LD4 = 0;
 
-    //if (a & 2)
+    if (a & 2)
         LD5 = 1;
-    //else
-        //LD5 = 0;
+    else
+        LD5 = 0;
 
-    //if (a & 4)
+    if (a & 4)
         LD6 = 1;
-    //else
-        //LD6 = 0;
+    else
+        LD6 = 0;
 
-    //if (a & 8)
+    if (a & 8)
         LD7 = 1;
-    //else
-        //LD7 = 0;
+    else
+        LD7 = 0;
 }
 void Lcd_Cmd(char a)
 {
